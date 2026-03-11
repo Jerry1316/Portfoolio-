@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jerry | Premium Portfolio</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* ================= VARIABLES & THEME ================= */
+        :root {
+            --bg-dark: #0a0a0a;
+            --red-accent: #e50914;
+            --red-glow: rgba(229, 9, 20, 0.6);
+            --glass-bg: rgba(25, 25, 25, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.05);
+            --text-light: #f5f5f5;
+            --text-muted: #b3b3b3;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        html { scroll-behavior: smooth; }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(80, 0, 0, 0.4), transparent 30%),
+                radial-gradient(circle at 85% 10%, rgba(120, 0, 0, 0.3), transparent 30%);
+            background-attachment: fixed;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ================= SCROLL ANIMATIONS ================= */
+        .reveal { opacity: 0; transform: translateY(60px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        .animate-on-load { animation: fadeInUp 1s cubic-bezier(0.5, 0, 0, 1) forwards; opacity: 0; }
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.5s; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* ================= NAVBAR & LINKS ================= */
+        nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; background: rgba(10, 10, 10, 0.8); backdrop-filter: blur(15px); border-bottom: 1px solid var(--glass-border); }
+        .profile-corner { display: flex; align-items: center; gap: 12px; }
+        .profile-corner img { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--red-accent); object-fit: cover; }
+        .profile-corner h2 { font-size: 1.6rem; letter-spacing: 1px; color: var(--text-light); margin: 0; }
+        .profile-corner span { color: var(--red-accent); }
+
+        .nav-links { display: flex; list-style: none; gap: 20px; margin: 0; padding: 0; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-weight: 500; transition: 0.3s; font-size: 0.95rem; }
+        .nav-links a:hover { color: var(--red-accent); text-shadow: 0 0 10px var(--red-glow); }
+
+        /* ================= GENERAL & GLASSMORPHISM ================= */
+        section { padding: 100px 10% 50px; }
+        .section-header { font-size: 2.5rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 40px; border-bottom: 2px solid var(--red-accent); display: inline-block; padding-bottom: 10px; }
+        
+        .glass-card { background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 16px; padding: 30px; transition: transform 0.4s ease, box-shadow 0.4s ease, border 0.4s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .glass-card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 20px 40px var(--red-glow); border: 1px solid var(--red-accent); }
+
+        .btn { display: inline-block; padding: 12px 30px; border-radius: 30px; background: linear-gradient(45deg, #b30000, var(--red-accent)); color: white; text-decoration: none; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; border: none; cursor: pointer; box-shadow: 0 4px 15px var(--red-glow); }
+        .btn:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 8px 25px var(--red-glow); }
+
+        /* ================= HERO SECTION (OVAL PROFILE) ================= */
+        .hero { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding-top: 100px; }
+        .hero-container { display: flex; align-items: center; justify-content: center; gap: 60px; width: 100%; max-width: 1100px; flex-wrap: wrap; }
+        
+        .hero-image { flex: 1; display: flex; justify-content: center; min-width: 300px; }
+        .hero-image img { width: 350px; height: 500px; object-fit: cover; border-radius: 50%; border: 3px solid var(--red-accent); box-shadow: 0 0 40px var(--red-glow); transition: 0.4s ease; }
+        .hero-image img:hover { transform: scale(1.03); box-shadow: 0 0 60px var(--red-accent); }
+
+        .hero-text { flex: 1; min-width: 300px; }
+        .hero-text h1 { font-size: 45pt; font-weight: 900; background: linear-gradient(90deg, #fff, #ff4d4d); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 15px; line-height: 1.1; }
+        .hero-text p { font-size: 1.4rem; color: var(--text-muted); margin-bottom: 30px; font-weight: 300; }
+
+        /* ================= ABOUT ME ================= */
+        .about-text h4 { color: var(--red-accent); font-size: 1.3rem; margin-top: 25px; margin-bottom: 10px; }
+        .about-text p { color: var(--text-muted); font-size: 1.05rem; }
+
+        /* ================= SERVICES ================= */
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+        .service-box { text-align: center; padding: 40px 20px; cursor: pointer; }
+        .service-box i { font-size: 3rem; color: var(--red-accent); margin-bottom: 15px; transition: 0.3s; }
+        .service-box:hover i { transform: scale(1.2); text-shadow: 0 0 20px var(--red-glow); }
+        .service-box h3 { font-size: 1.2rem; font-weight: 600; }
+
+        /* ================= ACADEMIC JOURNEY ================= */
+        .timeline ul { list-style: none; border-left: 2px solid var(--red-accent); padding-left: 25px; margin-left: 10px; }
+        .timeline li { margin-bottom: 35px; position: relative; }
+        .timeline li::before { content: ''; position: absolute; left: -32px; top: 5px; width: 14px; height: 14px; background: var(--red-accent); border-radius: 50%; box-shadow: 0 0 10px var(--red-accent); }
+        .timeline h4 { font-size: 1.2rem; color: #fff; margin-bottom: 5px; }
+        .timeline span { color: var(--red-accent); font-size: 0.9rem; font-weight: bold; display: block; margin-bottom: 10px; }
+
+        /* ================= SKILLS SECTION ================= */
+        .tabs { display: flex; gap: 15px; margin-bottom: 30px; flex-wrap: wrap; }
+        .tab-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--red-accent); color: white; padding: 12px 25px; border-radius: 30px; cursor: pointer; transition: 0.3s; font-weight: bold; }
+        .tab-btn.active, .tab-btn:hover { background: var(--red-accent); box-shadow: 0 0 15px var(--red-glow); }
+        
+        .tab-content { display: none; animation: fadeIn 0.5s ease; }
+        .tab-content.active { display: block; }
+
+        .skill-item { margin-top: 20px; }
+        .skill-item p { margin-bottom: 10px; color: var(--text-muted); }
+        .progress-bar { background: #222; height: 10px; border-radius: 5px; overflow: hidden; margin-top: 15px; }
+        .progress-fill { background: linear-gradient(90deg, #800000, var(--red-accent)); height: 100%; border-radius: 5px; width: 0; transition: width 1.5s ease-out; }
+
+        .tool-logos { display: flex; gap: 20px; margin-top: 20px; font-size: 2.5rem; color: var(--text-muted); }
+        .tool-logos i:hover { color: var(--red-accent); }
+        .canva-text { font-size: 1.5rem; font-weight: bold; font-style: italic; margin-top: 5px; }
+
+        /* ================= FEATURED WORKS & REVIEWS ================= */
+        .works-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+        .project-card { padding: 20px; }
+        .project-img { width: 100%; height: 220px; object-fit: cover; border-radius: 10px; margin-bottom: 20px; border: 1px solid var(--glass-border); transition: 0.4s; }
+        .project-card:hover .project-img { transform: scale(1.03); border-color: var(--red-accent); }
+        .project-card h3 { font-size: 1.3rem; margin-bottom: 5px; }
+        .project-card .sub-heading { color: var(--red-accent); font-size: 0.9rem; margin-bottom: 15px; font-weight: bold; }
+        .project-card p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 20px; }
+        
+        .badges { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+        .badge { background: rgba(229, 9, 20, 0.15); border: 1px solid var(--red-accent); color: #fff; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; letter-spacing: 0.5px; }
+
+        /* ================= CONTACT ================= */
+        .contact-wrap { text-align: center; }
+        .contact-wrap h3 { font-size: 2rem; margin-bottom: 20px; }
+        .social-links { display: flex; justify-content: center; gap: 30px; margin-top: 30px; }
+        .social-links a { display: flex; align-items: center; justify-content: center; width: 70px; height: 70px; border-radius: 50%; background: var(--glass-bg); border: 1px solid var(--red-accent); color: white; font-size: 2rem; transition: 0.4s; text-decoration: none; }
+        .social-links a:hover { background: var(--red-accent); transform: scale(1.1) rotate(5deg); box-shadow: 0 0 25px var(--red-glow); }
+        .contact-details { margin-top: 30px; font-size: 1.2rem; color: var(--text-muted); }
+        .contact-details span { color: white; font-weight: bold; }
+
+        /* ================= RESPONSIVE DESIGN FOR MOBILE ================= */
+        @media (max-width: 900px) {
+            nav { flex-direction: column; padding: 15px 5%; gap: 15px; }
+            .nav-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+            .nav-links a { font-size: 0.85rem; padding: 2px 5px; background: rgba(255,255,255,0.05); border-radius: 5px; }
+            .hero { padding-top: 150px; }
+            .hero-text h1 { font-size: 30pt; text-align: center; }
+            .hero-text p { text-align: center; }
+            .hero-image img { width: 280px; height: 400px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="profile-corner">
+            <img src="profile-pic.jpg" alt="Jerry DP">
+            <h2>JERRY<span>.</span></h2>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About Me</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#academic">Academic Journey</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#works">Featured Works</a></li>
+            <li><a href="#testimonials">Reviews</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero" id="home">
+        <div class="hero-container">
+            <div class="hero-image animate-on-load delay-1">
+                <img src="1000300674.jpg" alt="Designing The Future">
+            </div>
+            <div class="hero-text animate-on-load delay-2">
+                <h1>Hey, Itz Jerry</h1><p> FREELANCER</P>
+                <p>I'm a Web developer and Instagram Digital creator</p>
+                <div>
+                    <a href="#contact" class="btn">Hire Me <i class="fas fa-arrow-right" style="margin-left: 8px;"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about">
+        <h2 class="section-header reveal">About Me</h2>
+        <div class="glass-card about-text reveal">
+            <h4>Who I Am</h4>
+            <p>I am a first-year Computer Science Engineering student with a passion for building digital experiences. By day, I dive deep into Data Structures and Algorithms (DSA) and Java; by night, I transform into a Creative Editor crafting cinematic visuals inspired by the grit of Indian Cinema.</p>
+            <h4>What I Do</h4>
+            <p><strong>Web Development:</strong> I build responsive, modern interfaces using HTML, CSS, and JavaScript. I believe a website should be more than just code—it should be an experience.</p>
+            <p><strong>Cinematic Editing:</strong> Heavily influenced by the Lokesh Kanagaraj aesthetic, I specialize in moody color grading, rhythmic transitions, and high-impact digital posters.</p>
+            <h4>The Hustle</h4>
+            <p>I am driven by discipline, strategy, and a "never give up" attitude.</p>
+        </div>
+    </section>
+
+    <section id="services">
+        <h2 class="section-header reveal">Services</h2>
+        <div class="services-grid">
+            <div class="glass-card service-box reveal" onclick="document.getElementById('works').scrollIntoView({behavior: 'smooth'})">
+                <i class="fas fa-paint-brush"></i>
+                <h3>Poster Designing</h3>
+            </div>
+            <div class="glass-card service-box reveal" onclick="document.getElementById('works').scrollIntoView({behavior: 'smooth'})" style="transition-delay: 0.1s;">
+                <i class="fas fa-film"></i>
+                <h3>Video Editing</h3>
+            </div>
+            <div class="glass-card service-box reveal" onclick="document.getElementById('works').scrollIntoView({behavior: 'smooth'})" style="transition-delay: 0.2s;">
+               <i class="fas fa-laptop-code"></i>
+                <h3>Web Development</h3>
+            </div>
+            <div class="glass-card service-box reveal" onclick="document.getElementById('works').scrollIntoView({behavior: 'smooth'})" style="transition-delay: 0.3s;">
+                <i class="fas fa-file-powerpoint"></i>
+                <h3>PPT Presentations</h3>
+            </div>
+        </div>
+    </section>
+
+    <section id="academic">
+        <h2 class="section-header reveal">Academic Journey</h2>
+        <div class="glass-card timeline reveal">
+            <ul>
+                <li>
+                    <h4>Bachelor of Technology (Computer Science & Engineering)</h4>
+                    <span>RGUKT Srikakulam (IIIT) | 2025 – 2029 (Expected)</span>
+                    <p>Currently in my 1st Year of Engineering, building a strong foundation in Software Development and Problem Solving. Focusing on Java, C Programming, and Data Structures (DSA).</p>
+                </li>
+                <li>
+                    <h4>Pre-University Course (Intermediate)</h4>
+                    <span>RGUKT Srikakulam (IIIT) | 2023 – 2025</span>
+                    <p>Completed a 2-year integrated program with a focus on MPC (Mathematics, Physics, Chemistry). Graduated with an 8.0 CGPA, balancing technical studies with emerging digital skills.</p>
+                </li>
+                <li>
+                    <h4>Secondary School Certificate (SSC)</h4>
+                    <span>ZPHS N.Kothapalli, Nandyal | Completed 2023</span>
+                    <p>Earned a merit-based seat at the prestigious RGUKT system, a testament to high academic ranking and dedication.</p>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="skills">
+        <h2 class="section-header reveal">Skills</h2>
+        <div class="tabs reveal">
+            <button class="tab-btn active" onclick="openTab('tech')">Technical Skills</button>
+            <button class="tab-btn" onclick="openTab('creative')">Creative Skills</button>
+            <button class="tab-btn" onclick="openTab('personal')">Personal Skills</button>
+        </div>
+
+        <div class="glass-card reveal">
+            <div id="tech" class="tab-content active skill-item">
+                <p><strong>Programming Languages:</strong> C, Java (Basics to Intermediate).</p>
+                <p><strong>Data Structures:</strong> Array, Linked List, Stacks (DSA fundamentals).</p>
+                <p><strong>Web Development:</strong> HTML5, CSS3 (Modern Glassmorphism designs), JavaScript basics.</p>
+                <p><strong>Tools:</strong> VS Code, Git/GitHub (Hosting and Version Control).</p>
+                <div style="margin-top: 25px; display:flex; justify-content:space-between; color:white;"><span>Programming</span><span>85%</span></div>
+                <div class="progress-bar"><div class="progress-fill" style="width: 85%;"></div></div>
+                <div style="margin-top: 15px; display:flex; justify-content:space-between; color:white;"><span>Web Development</span><span>90%</span></div>
+                <div class="progress-bar"><div class="progress-fill" style="width: 90%;"></div></div>
+            </div>
+
+            <div id="creative" class="tab-content skill-item">
+                <p><strong>Video Editing:</strong> Cinematic transitions, High-retention pacing, LCU-style storytelling.</p>
+                <p><strong>Color Grading:</strong> Moody tones, Grit textures, and High-contrast grading.</p>
+                <p><strong>Graphic Design:</strong> Digital Poster Making, Typography (Modern fonts), and Lighting Effects (neon aesthetics).</p>
+                <p><strong>Mobile Editing:</strong> Mastering CapCut for professional-grade Reels.</p>
+                <div class="tool-logos">
+                    <i class="fas fa-photo-video" title="Premiere Pro"></i>
+                    <i class="fas fa-cut" title="CapCut"></i>
+                    <span class="canva-text" title="Canva">Canva</span>
+                </div>
+            </div>
+
+            <div id="personal" class="tab-content skill-item">
+                <p><strong>Strategic Thinking:</strong> As a Kabaddi Right Cover, fast-reflexes and team coordination.</p>
+                <p><strong>Leadership:</strong> Experience as a Mess Representative/QMC Member (Management skills).</p>
+                <p><strong>Discipline:</strong> Balancing a 6-year integrated B.Tech course with freelance projects.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="works">
+        <h2 class="section-header reveal">Featured Works</h2>
+        <div class="works-grid">
+            
+            <div class="glass-card project-card reveal">
+                <img src="devnex-poster.jpg" alt="DevNex" class="project-img">
+                <h3>DevNex — High-Performance Personal Brand Experience</h3>
+                <p class="sub-heading">Full-stack Portfolio Design & Deployment</p>
+                <p>Developed a modern, responsive digital identity using Glassmorphism design principles. Focused on clean UI, fluid animations, and optimized hosting for a seamless user experience.</p>
+                <div class="badges"><span class="badge">HTML5</span> <span class="badge">CSS3</span> <span class="badge">JavaScript</span> <span class="badge">GitHub</span></div>
+                <a href="#" target="_blank" class="btn" style="padding: 10px 20px; font-size: 0.85rem;">View Project</a>
+            </div>
+
+            <div class="glass-card project-card reveal" style="transition-delay: 0.1s;">
+                <img src="cinematic-poster.jpg" alt="Visual Noir" class="project-img">
+                <h3>Visual Noir — Cinematic Grading & Motion Arts</h3>
+                <p class="sub-heading">Lokesh Kanagaraj Inspired Storytelling</p>
+                <p>A collection of high-impact video edits and digital posters focusing on moody color palettes, lighting manipulation, and rhythmic pacing for high-retention social media content.</p>
+                <div class="badges"><span class="badge">CapCut Pro</span> <span class="badge">Digital Lighting</span> <span class="badge">Color Grading</span></div>
+                <a href="https://drive.google.com/file/d/1qFAg-1W9vjgDDvsP8gxaWp1axr4udmZ0/view?usp=drivesdk" target="_blank" class="btn" style="padding: 10px 20px; font-size: 0.85rem;">Watch Edit</a>
+            </div>
+
+            <div class="glass-card project-card reveal" style="transition-delay: 0.2s;">
+                <img src="birthday-poster.png" alt="March 8 Project" class="project-img">
+                <h3>Project March 8 — Interactive Digital Storytelling</h3>
+                <p class="sub-heading">Personalized Web Experience & Magazine Design</p>
+                <p>A unique hybrid project blending custom web coding with digital magazine aesthetics. Built to showcase the ability to transform a creative concept into a functional interactive reality.</p>
+                <div class="badges">
+                    <span class="badge">UI/UX Design</span> 
+                    <span class="badge">Web Development</span> 
+                    <span class="badge">Creative Strategy</span>
+                </div>
+                <a href="https://jerry1316.github.io/divya-birthday/" target="_blank" class="btn" style="padding: 10px 20px; font-size: 0.85rem;">View Project</a>
+            </div>
+            
+        </div>
+    </section>
+
+    <section id="testimonials">
+        <h2 class="section-header reveal">Client Reviews</h2>
+        <div class="works-grid">
+
+            <div class="glass-card reveal">
+                <i class="fas fa-quote-left" style="color: var(--red-accent); font-size: 1.8rem; margin-bottom: 15px;"></i>
+                <p style="font-style: italic; color: var(--text-muted);">"Jerry created a clean and modern portfolio website for me. Very professional work and great attention to detail."</p>
+                <h4 style="color:var(--text-light); margin-top:15px; font-weight: bold;">— Rahul</h4>
+                <span style="color: var(--red-accent); font-size: 0.85rem;">Freelance Client</span>
+            </div>
+
+            <div class="glass-card reveal" style="transition-delay: 0.1s;">
+                <i class="fas fa-quote-left" style="color: var(--red-accent); font-size: 1.8rem; margin-bottom: 15px;"></i>
+                <p style="font-style: italic; color: var(--text-muted);">"Fast delivery and great design sense. He understands the cinematic vibe perfectly. Highly recommended developer."</p>
+                <h4 style="color:var(--text-light); margin-top:15px; font-weight: bold;">— Sneha</h4>
+                <span style="color: var(--red-accent); font-size: 0.85rem;">Digital Creator</span>
+            </div>
+
+            <div class="glass-card reveal" style="transition-delay: 0.2s;">
+                <i class="fas fa-quote-left" style="color: var(--red-accent); font-size: 1.8rem; margin-bottom: 15px;"></i>
+                <p style="font-style: italic; color: var(--text-muted);">"Best student portfolio developer. The design looks premium, and the glassmorphism UI is just next level."</p>
+                <h4 style="color:var(--text-light); margin-top:15px; font-weight: bold;">— Arjun</h4>
+                <span style="color: var(--red-accent); font-size: 0.85rem;">UI/UX Project</span>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2 class="section-header reveal">Contact</h2>
+        <div class="glass-card contact-wrap reveal">
+            <h3>Let's Build Something Cinematic.</h3>
+            <div class="social-links">
+                <a href="https://instagram.com/Devnex.web" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="mailto:jerrybaranasi@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+            </div>
+            <div class="contact-details">
+                <p>Instagram: <span>@Devnex.web</span></p>
+                <p>Email: <span>jerrybaranasi@gmail.com</span></p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // 1. Scroll Reveal Animations
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 100;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        reveal(); // Trigger once on load
+
+        // 2. Tab Switching Logic
+        function openTab(tabId) {
+            let contents = document.querySelectorAll('.tab-content');
+            contents.forEach(c => c.classList.remove('active'));
+            
+            let btns = document.querySelectorAll('.tab-btn');
+            btns.forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+
+            // Trigger progress bar animations when tab opens
+            if(tabId === 'tech') {
+                let bars = document.querySelectorAll('.progress-fill');
+                bars.forEach(bar => {
+                    let width = bar.style.width;
+                    bar.style.width = '0';
+                    setTimeout(() => { bar.style.width = width; }, 100);
+                });
+            }
+        }
+    </script>
+</body>
+</html>
+                
