@@ -167,6 +167,8 @@
             <li><a href="#works">Featured Works</a></li>
             <li><a href="#testimonials">Reviews</a></li>
             <li><a href="#contact">Contact</a></li>
+            <button id="theme-toggle" class="theme-btn">🌗</button>
+            
         </ul>
     </nav>
 
@@ -445,6 +447,25 @@
                 });
             }
         }
+        const toggleBtn = document.getElementById('theme-toggle');
+const currentTheme = localStorage.getItem('theme');
+
+// Check saved theme
+if (currentTheme) {
+    document.documentElement.setAttribute('data-theme', currentTheme);
+}
+
+toggleBtn.addEventListener('click', () => {
+    let theme = document.documentElement.getAttribute('data-theme');
+    if (theme === 'light') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+    } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+        localStorage.setItem('theme', 'light');
+    }
+});
+        
     </script>
 </body>
 </html>
